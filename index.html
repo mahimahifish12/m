@@ -12,9 +12,66 @@
       color: #333;
       padding: 30px 20px 60px 20px;
     }
+
+    /* SURVEY STYLES */
+    #survey-container {
+      max-width: 600px;
+      margin: 100px auto;
+      background: white;
+      border: 3px solid #7c3aed;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+    #survey-container h2 {
+      color: #7c3aed;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    #survey-container p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 30px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.1s;
+    }
+    .btn:hover { transform: scale(1.05); }
+    .btn-yes { background-color: #7c3aed; color: white; }
+    .btn-no { background-color: #e5e7eb; color: #333; }
+    .btn-option {
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: 2px solid #7c3aed;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      background: white;
+      color: #333;
+      text-align: left;
+      transition: background 0.2s;
+    }
+    .btn-option:hover { background-color: #ede9fe; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* MAIN WEBSITE STYLES */
+    #main-content { display: none; }
     h1 { color: #7c3aed; font-size: 2.5rem; text-align: center; margin-bottom: 10px; }
     h2.section-title { color: #7c3aed; font-size: 2rem; text-align: center; margin: 50px 0 20px 0; }
     p.intro { text-align: center; font-size: 1.2rem; color: #555; margin-bottom: 30px; }
+    p.hope { text-align: center; font-size: 1.3rem; color: #7c3aed; font-weight: bold; margin-bottom: 30px; }
     p.section-intro { text-align: center; font-size: 1.1rem; color: #555; margin-bottom: 30px; }
     .step { background-color: #ffffff; border: 3px solid #7c3aed; border-radius: 15px; padding: 25px; margin-bottom: 20px; }
     .step h2 { color: #7c3aed; font-size: 1.4rem; margin-bottom: 12px; }
@@ -30,7 +87,63 @@
 </head>
 <body>
 
+<!-- SURVEY SECTION -->
+<div id="survey-container">
+
+  <!-- Screen 1: Are you a beginner? -->
+  <div id="screen-1" class="screen active">
+    <h2>👋 Welcome!</h2>
+    <p>Before we get started, we just have a quick question for you!</p>
+    <p><strong>Are you a beginner in developing code?</strong></p>
+    <button class="btn btn-yes" onclick="beginnerYes()">✅ Yes</button>
+    <button class="btn btn-no" onclick="beginnerNo()">❌ No</button>
+  </div>
+
+  <!-- Screen 2a: Beginner yes -->
+  <div id="screen-2a" class="screen">
+    <h2>🎉 Ok, let's begin!</h2>
+    <p>Amazing! You are in the right place. This website was made just for beginners like you. Before we take you to the guide, we just want to ask — <strong>how did you find out about this website?</strong></p>
+    <button class="btn-option" onclick="surveyAnswer('A friend told me')">👫 A friend told me</button>
+    <button class="btn-option" onclick="surveyAnswer('I found it on Google')">🔍 I found it on Google</button>
+    <button class="btn-option" onclick="surveyAnswer('I saw it on social media')">📱 I saw it on social media</button>
+    <button class="btn-option" onclick="surveyAnswer('A teacher or school recommended it')">🏫 A teacher or school recommended it</button>
+    <button class="btn-option" onclick="surveyAnswer('I saw it on YouTube')">📺 I saw it on YouTube</button>
+    <button class="btn-option" onclick="surveyAnswer('Someone in my family showed me')">👨‍👩‍👧 Someone in my family showed me</button>
+    <button class="btn-option" onclick="surveyAnswer('I just randomly found it')">🎲 I just randomly found it</button>
+    <button class="btn-option" onclick="surveyAnswer('Other')">💬 Other</button>
+  </div>
+
+  <!-- Screen 2b: Not a beginner -->
+  <div id="screen-2b" class="screen">
+    <h2>👀 Heads up!</h2>
+    <p>This website is designed for <strong>complete beginners</strong> who have never coded before. It covers the very basics of coding from scratch.</p>
+    <p>Would you still like to continue?</p>
+    <button class="btn btn-yes" onclick="notBeginnerYes()">✅ Yes, I still want to look around</button>
+    <button class="btn btn-no" onclick="notBeginnerNo()">❌ No, I'll close the tab</button>
+  </div>
+
+  <!-- Screen 3: Survey thank you -->
+  <div id="screen-3" class="screen">
+    <h2>🙏 Thanks for letting us know!</h2>
+    <p>That is really helpful for us to know. We hope you enjoy the guide and learn loads!</p>
+    <p>Click below when you are ready to start your coding journey!</p>
+    <button class="btn btn-yes" onclick="goToMain()">🚀 Let's Go!</button>
+  </div>
+
+  <!-- Screen 4: Not beginner no -->
+  <div id="screen-4" class="screen">
+    <h2>👋 No problem!</h2>
+    <p>That is totally okay! This guide is here whenever you need it. Feel free to close this tab and come back anytime you want to learn the basics of coding from scratch.</p>
+    <p style="margin-top:20px; color:#7c3aed; font-weight:bold;">You can now close this tab. See you next time! 😊</p>
+  </div>
+
+</div>
+
+<!-- MAIN WEBSITE CONTENT -->
+<div id="main-content">
+
   <h1>🚀 How to Become a Developer!</h1>
+  <p class="hope">💜 I hope this helps you on your coding journey!</p>
   <p class="intro">Hey! If you are 13 and have never coded before — this guide is made just for you. Read every step carefully and by the end you will have written real code and launched a real website! 😊</p>
 
   <div class="step">
@@ -141,103 +254,137 @@
     <div class="tip">💡 Tip: The best time to start was yesterday. The second best time is right now. Go write some code!</div>
   </div>
 
-  <!-- TOOLS SECTION -->
   <h2 class="section-title">🧰 Tools and Technologies Every Developer Should Know</h2>
-  <p class="section-intro">Now that you know the steps to get started here are all the different tools, languages, and technologies used in the real world of coding. Do not try to learn all of these at once — just use this as a guide to know what exists and what you might want to learn next!</p>
+  <p class="section-intro">Now that you know the steps here are all the different tools, languages, and technologies used in the real world of coding. Do not try to learn all of these at once — just use this as a guide to know what exists and what you might want to learn next!</p>
 
   <div class="tool">
     <h3>🐍 Python</h3>
     <span class="tag">Beginner Friendly</span>
-    <p>Python is the best language to start with and one of the most powerful languages in the world. It is used for building websites, creating artificial intelligence, analyzing data, automating tasks, making games, and much more. Companies like Google, NASA, Netflix, and Instagram use Python every day. The best thing about Python is how clean and readable it is — it looks almost like plain English which makes it perfect for beginners. Once you learn Python you will find that most other languages are much easier to pick up because the concepts are the same.</p>
+    <p>Python is the best language to start with and one of the most powerful languages in the world. It is used for building websites, creating artificial intelligence, analyzing data, automating tasks, making games, and much more. Companies like Google, NASA, Netflix, and Instagram use Python every day. The best thing about Python is how clean and readable it is — it looks almost like plain English which makes it perfect for beginners.</p>
   </div>
 
   <div class="tool">
-    <h3>🌐 HTML — HyperText Markup Language</h3>
+    <h3>🌐 HTML</h3>
     <span class="tag">Web Development</span>
-    <p>HTML is the foundation of every single webpage on the internet. It is not a programming language — it is a markup language which means you use it to label and structure content. You wrap text in tags to tell the browser what it is. A heading goes in an h1 tag. A paragraph goes in a p tag. An image goes in an img tag. A clickable link goes in an a tag. Without HTML there would be no websites at all. It is one of the easiest things to learn in all of coding and most people can get comfortable with the basics in just a day or two.</p>
+    <p>HTML is the foundation of every single webpage on the internet. You use it to label and structure content — headings, paragraphs, images, links, and buttons. Without HTML there would be no websites at all. It is one of the easiest things to learn in all of coding and most people get comfortable with the basics in just a day or two.</p>
   </div>
 
   <div class="tool">
-    <h3>🎨 CSS — Cascading Style Sheets</h3>
+    <h3>🎨 CSS</h3>
     <span class="tag">Web Development</span>
-    <p>CSS is what makes websites look beautiful instead of plain and boring. Without CSS every website would just be black text on a white background with no colors, no fonts, no layouts — nothing. With CSS you can change the color of text, add background colors and images, control the size and spacing of everything, create layouts with columns and grids, add animations and transitions, make websites look good on phones and tablets, and so much more. CSS takes a while to fully master but the basics are easy to pick up and the results are incredibly satisfying. This purple website you are reading right now is styled entirely with CSS!</p>
+    <p>CSS is what makes websites look beautiful. Without it every website would just be black text on a white background. With CSS you can change colors, fonts, sizes, layouts, add animations, and make websites look good on phones and tablets. This purple website you are reading right now is styled entirely with CSS!</p>
   </div>
 
   <div class="tool">
     <h3>⚡ JavaScript</h3>
     <span class="tag">Web Development</span>
-    <p>JavaScript is what makes websites interactive and alive. HTML gives a page its structure, CSS gives it style, and JavaScript gives it behavior. With JavaScript you can make buttons do things when you click them, show popups and alerts, validate forms before they are submitted, fetch data from the internet without reloading the page, create animations, build games that run in the browser, and much more. JavaScript is the only programming language that runs directly in your browser which makes it incredibly powerful for web development. It is also one of the most popular programming languages in the entire world and there are millions of jobs for JavaScript developers.</p>
+    <p>JavaScript makes websites interactive. With it you can make buttons do things, show popups, validate forms, fetch data, create animations, and build games that run in the browser. It is the only programming language that runs directly in your browser and one of the most popular languages in the entire world.</p>
   </div>
 
   <div class="tool">
     <h3>⚛️ React</h3>
     <span class="tag">Advanced Web Development</span>
-    <p>React is a JavaScript library created by Facebook that makes building big complicated websites much easier. Instead of writing one massive HTML file React lets you break your website into small reusable pieces called <strong>components</strong>. Each component is like a building block — you make it once and then use it in many different places. For example you might make a Button component, a Card component, and a Header component and then combine them to build your full page. React is used by some of the biggest websites in the world including Facebook, Instagram, Netflix, Airbnb, and many more. Learning React after you know JavaScript is a huge boost to your career as a web developer.</p>
+    <p>React is a JavaScript library created by Facebook that makes building big complicated websites much easier. It lets you break your website into small reusable pieces called components. React is used by Facebook, Instagram, Netflix, and Airbnb. Learning React after JavaScript is a huge boost to your career.</p>
   </div>
 
   <div class="tool">
     <h3>🟢 Node.js</h3>
     <span class="tag">Back End Development</span>
-    <p>Node.js lets you use JavaScript on the back end of a website — the server side stuff that users never see directly. Before Node.js JavaScript could only run in the browser. Node.js changed that by letting you run JavaScript on a server which means you can use one language for both the front end and back end of your website. Node.js is incredibly fast and is used by companies like Netflix, LinkedIn, Uber, and PayPal to handle millions of users at the same time. If you enjoy JavaScript and want to build the back end of websites then Node.js is definitely something to look into.</p>
+    <p>Node.js lets you use JavaScript on the server side of websites. Before Node.js JavaScript could only run in the browser. Node.js is incredibly fast and is used by Netflix, LinkedIn, Uber, and PayPal to handle millions of users at the same time.</p>
   </div>
 
   <div class="tool">
-    <h3>🗄️ Databases — SQL and NoSQL</h3>
+    <h3>🗄️ Databases</h3>
     <span class="tag">Back End Development</span>
-    <p>Almost every app and website needs to store information somewhere — user accounts, posts, messages, orders, scores. That information is stored in a <strong>database</strong>. There are two main types. <strong>SQL databases</strong> like MySQL and PostgreSQL store data in tables with rows and columns — kind of like a giant spreadsheet. You use a language called SQL to ask the database questions like give me all users who signed up this month. <strong>NoSQL databases</strong> like MongoDB store data in a more flexible format that looks like Python dictionaries. Understanding databases is essential for building any real app that needs to remember information.</p>
+    <p>Almost every app needs to store information somewhere — user accounts, posts, messages, orders. That information lives in a database. SQL databases like MySQL store data in tables like a spreadsheet. NoSQL databases like MongoDB store data in a more flexible format. Understanding databases is essential for building any real app.</p>
   </div>
 
   <div class="tool">
     <h3>🔧 Git and GitHub</h3>
     <span class="tag">Essential Tool</span>
-    <p>Git is a version control system that tracks every single change you make to your code over time. Think of it like a time machine — you can go back to any previous version of your code at any moment. This is incredibly useful when you accidentally break something and need to undo your changes. GitHub is a website that stores your Git repositories in the cloud so they are safe, backed up, and accessible from anywhere. Every professional developer uses Git and GitHub every single day. It is not optional — it is as essential as knowing how to type. The good news is the basics are simple and you will pick them up very quickly.</p>
+    <p>Git tracks every change you make to your code like a time machine. GitHub stores your code in the cloud so it is safe and accessible from anywhere. Every professional developer uses Git and GitHub every single day. It is not optional — it is as essential as knowing how to type.</p>
   </div>
 
   <div class="tool">
-    <h3>☁️ Cloud Platforms — Azure, AWS, Google Cloud</h3>
+    <h3>☁️ Cloud Platforms</h3>
     <span class="tag">Deployment</span>
-    <p>Cloud platforms are where you host and run your apps and websites so other people can access them over the internet. The three biggest ones are <strong>Microsoft Azure</strong>, <strong>Amazon Web Services (AWS)</strong>, and <strong>Google Cloud</strong>. They all offer massive amounts of computing power, storage, databases, AI tools, security, and much more — all available over the internet so you do not need to buy your own servers. You already used Azure in this guide to host your website! All three platforms have free tiers which are perfect for beginners and students. Learning cloud basics is a massive advantage when looking for developer jobs because almost every company uses at least one of these platforms.</p>
+    <p>Cloud platforms like Microsoft Azure, Amazon Web Services, and Google Cloud are where you host and run your apps. They offer computing power, storage, databases, AI tools, and much more over the internet. You already used Azure in this guide! All three have free tiers perfect for students and beginners.</p>
   </div>
 
   <div class="tool">
-    <h3>📱 Mobile App Development — Swift and Kotlin</h3>
+    <h3>📱 Mobile App Development</h3>
     <span class="tag">Mobile Development</span>
-    <p>If you want to build apps for phones and tablets there are specific languages for that. <strong>Swift</strong> is the language used to build apps for iPhones and iPads — it is made by Apple and is the main language for all iOS development. <strong>Kotlin</strong> is the language used to build apps for Android phones — it is made by Google and has mostly replaced the older Java language for Android development. There is also <strong>React Native</strong> which lets you use JavaScript to build apps that work on both iPhone and Android at the same time which is very convenient. If you have ever had an idea for a phone app these are the tools you would use to build it!</p>
+    <p>Swift is used to build iPhone apps. Kotlin is used to build Android apps. React Native lets you use JavaScript to build apps for both at the same time. If you have ever had an idea for a phone app these are the tools you would use to build it!</p>
   </div>
 
   <div class="tool">
-    <h3>🤖 Artificial Intelligence and Machine Learning</h3>
+    <h3>🤖 Artificial Intelligence</h3>
     <span class="tag">Advanced</span>
-    <p>AI and machine learning are probably the most exciting areas of coding right now. Machine learning is when you train a computer to learn from data instead of programming it with specific rules. For example instead of programming a computer with rules for recognizing a cat you show it millions of pictures of cats and it learns on its own what a cat looks like. Python is the main language used for AI and machine learning and there are amazing free libraries like <strong>TensorFlow</strong> and <strong>PyTorch</strong> that make it much easier. AI is being used to build things like chatbots, self driving cars, medical diagnosis tools, music generators, image creators, and so much more. This is the future of technology and knowing Python puts you in a perfect position to get into it!</p>
+    <p>AI and machine learning are the most exciting areas of coding right now. Python is the main language used and there are free libraries like TensorFlow and PyTorch that make it easier. AI is being used to build chatbots, self driving cars, medical tools, music generators, and much more. This is the future of technology!</p>
   </div>
 
   <div class="tool">
-    <h3>🎮 Game Development — Unity and Unreal Engine</h3>
+    <h3>🎮 Game Development</h3>
     <span class="tag">Game Development</span>
-    <p>If you love video games then game development might be exactly what you are looking for. <strong>Unity</strong> is one of the most popular game engines in the world and uses a language called <strong>C#</strong>. It is used to make both 2D and 3D games and is especially popular for mobile games and indie games. <strong>Unreal Engine</strong> is another incredibly powerful game engine used by big studios to make AAA games — it uses <strong>C++</strong> which is more complex but also very powerful. There is also <strong>Pygame</strong> which lets you make simple 2D games using Python which is perfect for beginners. If making games is your dream then these are the tools to look into!</p>
+    <p>Unity uses C# and is great for 2D and 3D games including mobile games. Unreal Engine uses C++ and is used by big studios for AAA games. Pygame lets you make simple 2D games using Python which is perfect for beginners. If making games is your dream these are the tools to look into!</p>
   </div>
 
   <div class="tool">
     <h3>🔒 Cybersecurity</h3>
     <span class="tag">Security</span>
-    <p>Cybersecurity is the field of protecting computers, networks, and data from hackers and attacks. This is a massive and growing field because as more of the world moves online there are more things that need to be protected. Cybersecurity professionals called <strong>ethical hackers</strong> or <strong>penetration testers</strong> are paid to try to break into systems — legally — to find weaknesses before real hackers do. Learning cybersecurity usually starts with understanding how networks work, learning Linux, and picking up Python for scripting and automation. If you are interested in this area a great place to start is a free platform called <strong>TryHackMe</strong> which teaches cybersecurity in a fun game-like way that is perfect for beginners.</p>
+    <p>Cybersecurity is about protecting computers and data from hackers. Ethical hackers are paid to legally try to break into systems to find weaknesses before real hackers do. A great free place to start learning is TryHackMe which teaches cybersecurity in a fun game-like way perfect for beginners.</p>
   </div>
 
   <div class="tool">
     <h3>📊 Data Science</h3>
     <span class="tag">Data</span>
-    <p>Data science is about collecting, cleaning, analyzing, and visualizing data to find useful patterns and insights. Companies collect enormous amounts of data every day — about what products people buy, what videos they watch, what routes they drive — and data scientists help make sense of all that information. Python is the main language used in data science along with libraries like <strong>Pandas</strong> for working with data, <strong>Matplotlib</strong> for creating charts and graphs, and <strong>NumPy</strong> for doing math with large amounts of numbers very quickly. Data scientists are in huge demand right now and the pay is excellent. If you enjoy math and finding patterns in information data science could be a great path for you!</p>
+    <p>Data science is about analyzing data to find useful patterns and insights. Python is the main language along with libraries like Pandas, Matplotlib, and NumPy. Data scientists are in huge demand and the pay is excellent. If you enjoy math and finding patterns in information this could be a great path!</p>
   </div>
 
   <div class="tool">
-    <h3>🧪 APIs — Application Programming Interfaces</h3>
+    <h3>🧪 APIs</h3>
     <span class="tag">Essential Concept</span>
-    <p>An API is a way for different programs to talk to each other. When you use an app that shows the weather it is not building its own weather system — it is using a weather API which is a service that other developers have built and made available. Your app sends a request to the weather API saying give me the weather for London and the API sends back the data. When you use Sign in with Google on a website that is an API. When a website lets you pay with PayPal that is an API. Virtually every modern app uses multiple APIs and knowing how to use them opens up an enormous amount of possibilities for what you can build. Learning to work with APIs is one of the most practical skills a developer can have!</p>
+    <p>An API is a way for different programs to talk to each other. Weather apps use weather APIs. Login with Google uses an API. Pay with PayPal uses an API. Virtually every modern app uses multiple APIs and knowing how to use them opens up enormous possibilities for what you can build!</p>
   </div>
 
   <footer>
     <p>Made by Mahi 🌟</p>
   </footer>
+
+</div>
+
+<script>
+  function beginnerYes() {
+    showScreen('screen-2a');
+  }
+
+  function beginnerNo() {
+    showScreen('screen-2b');
+  }
+
+  function surveyAnswer(answer) {
+    showScreen('screen-3');
+  }
+
+  function notBeginnerYes() {
+    goToMain();
+  }
+
+  function notBeginnerNo() {
+    showScreen('screen-4');
+  }
+
+  function goToMain() {
+    document.getElementById('survey-container').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+</script>
 
 </body>
 </html>
