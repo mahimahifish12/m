@@ -23,48 +23,97 @@
       padding: 40px;
       text-align: center;
     }
-    #survey-container h2 {
-      color: #7c3aed;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
-    #survey-container p {
-      font-size: 1.1rem;
-      color: #555;
-      margin-bottom: 30px;
-      line-height: 1.7;
-    }
-    .btn {
-      display: inline-block;
-      padding: 14px 30px;
-      margin: 10px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.1s;
-    }
+    #survey-container h2 { color: #7c3aed; font-size: 1.8rem; margin-bottom: 20px; }
+    #survey-container p { font-size: 1.1rem; color: #555; margin-bottom: 30px; line-height: 1.7; }
+    .btn { display: inline-block; padding: 14px 30px; margin: 10px; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: transform 0.1s; }
     .btn:hover { transform: scale(1.05); }
     .btn-yes { background-color: #7c3aed; color: white; }
     .btn-no { background-color: #e5e7eb; color: #333; }
-    .btn-option {
-      display: block;
-      width: 100%;
-      padding: 14px 20px;
-      margin: 8px 0;
-      border: 2px solid #7c3aed;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      background: white;
-      color: #333;
-      text-align: left;
-      transition: background 0.2s;
-    }
+    .btn-option { display: block; width: 100%; padding: 14px 20px; margin: 8px 0; border: 2px solid #7c3aed; border-radius: 10px; font-size: 1rem; cursor: pointer; background: white; color: #333; text-align: left; transition: background 0.2s; }
     .btn-option:hover { background-color: #ede9fe; }
     .screen { display: none; }
     .screen.active { display: block; }
+
+    /* NAME POPUP */
+    #name-popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    #name-popup.show { display: flex; }
+    #name-box {
+      background: white;
+      border: 3px solid #7c3aed;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+    #name-box h2 { color: #7c3aed; font-size: 1.8rem; margin-bottom: 15px; }
+    #name-box p { color: #555; font-size: 1.1rem; margin-bottom: 25px; }
+    #name-input {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      border: 2px solid #7c3aed;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      outline: none;
+      text-align: center;
+    }
+    #name-input:focus { border-color: #5b21b6; }
+    #name-submit {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #name-submit:hover { background: #5b21b6; }
+
+    /* TIP POPUP */
+    #tip-popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #7c3aed;
+      color: white;
+      padding: 18px 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      z-index: 50;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.6;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+      animation: slideDown 0.4s ease;
+    }
+    #tip-popup strong { font-size: 1.1rem; display: block; margin-bottom: 6px; }
+    #tip-close {
+      position: absolute;
+      top: 8px; right: 14px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    @keyframes slideDown {
+      from { top: -80px; opacity: 0; }
+      to { top: 20px; opacity: 1; }
+    }
 
     /* MAIN WEBSITE STYLES */
     #main-content { display: none; }
@@ -87,10 +136,27 @@
 </head>
 <body>
 
+<!-- TIP POPUP -->
+<div id="tip-popup">
+  <button id="tip-close" onclick="closeTip()">✕</button>
+  <strong id="tip-title"></strong>
+  <span id="tip-text"></span>
+</div>
+
+<!-- NAME POPUP -->
+<div id="name-popup">
+  <div id="name-box">
+    <h2>👋 One more thing!</h2>
+    <p>What is your name? We want to make this experience just for you!</p>
+    <input type="text" id="name-input" placeholder="Type your name here..." maxlength="30" />
+    <br>
+    <button id="name-submit" onclick="submitName()">Let's Go! 🚀</button>
+  </div>
+</div>
+
 <!-- SURVEY SECTION -->
 <div id="survey-container">
 
-  <!-- Screen 1: Are you a beginner? -->
   <div id="screen-1" class="screen active">
     <h2>👋 Welcome!</h2>
     <p>Before we get started, we just have a quick question for you!</p>
@@ -99,21 +165,19 @@
     <button class="btn btn-no" onclick="beginnerNo()">❌ No</button>
   </div>
 
-  <!-- Screen 2a: Beginner yes -->
   <div id="screen-2a" class="screen">
     <h2>🎉 Ok, let's begin!</h2>
-    <p>Amazing! You are in the right place. This website was made just for beginners like you. Before we take you to the guide, we just want to ask — <strong>how did you find out about this website?</strong></p>
-    <button class="btn-option" onclick="surveyAnswer('A friend told me')">👫 A friend told me</button>
-    <button class="btn-option" onclick="surveyAnswer('I found it on Google')">🔍 I found it on Google</button>
-    <button class="btn-option" onclick="surveyAnswer('I saw it on social media')">📱 I saw it on social media</button>
-    <button class="btn-option" onclick="surveyAnswer('A teacher or school recommended it')">🏫 A teacher or school recommended it</button>
-    <button class="btn-option" onclick="surveyAnswer('I saw it on YouTube')">📺 I saw it on YouTube</button>
-    <button class="btn-option" onclick="surveyAnswer('Someone in my family showed me')">👨‍👩‍👧 Someone in my family showed me</button>
-    <button class="btn-option" onclick="surveyAnswer('I just randomly found it')">🎲 I just randomly found it</button>
-    <button class="btn-option" onclick="surveyAnswer('Other')">💬 Other</button>
+    <p>Amazing! You are in the right place. Before we take you to the guide, we just want to ask — <strong>how did you find out about this website?</strong></p>
+    <button class="btn-option" onclick="surveyAnswer()">👫 A friend told me</button>
+    <button class="btn-option" onclick="surveyAnswer()">🔍 I found it on Google</button>
+    <button class="btn-option" onclick="surveyAnswer()">📱 I saw it on social media</button>
+    <button class="btn-option" onclick="surveyAnswer()">🏫 A teacher or school recommended it</button>
+    <button class="btn-option" onclick="surveyAnswer()">📺 I saw it on YouTube</button>
+    <button class="btn-option" onclick="surveyAnswer()">👨‍👩‍👧 Someone in my family showed me</button>
+    <button class="btn-option" onclick="surveyAnswer()">🎲 I just randomly found it</button>
+    <button class="btn-option" onclick="surveyAnswer()">💬 Other</button>
   </div>
 
-  <!-- Screen 2b: Not a beginner -->
   <div id="screen-2b" class="screen">
     <h2>👀 Heads up!</h2>
     <p>This website is designed for <strong>complete beginners</strong> who have never coded before. It covers the very basics of coding from scratch.</p>
@@ -122,15 +186,13 @@
     <button class="btn btn-no" onclick="notBeginnerNo()">❌ No, I'll close the tab</button>
   </div>
 
-  <!-- Screen 3: Survey thank you -->
   <div id="screen-3" class="screen">
     <h2>🙏 Thanks for letting us know!</h2>
-    <p>That is really helpful for us to know. We hope you enjoy the guide and learn loads!</p>
+    <p>That is really helpful! We hope you enjoy the guide and learn loads!</p>
     <p>Click below when you are ready to start your coding journey!</p>
-    <button class="btn btn-yes" onclick="goToMain()">🚀 Let's Go!</button>
+    <button class="btn btn-yes" onclick="showNamePopup()">🚀 Let's Go!</button>
   </div>
 
-  <!-- Screen 4: Not beginner no -->
   <div id="screen-4" class="screen">
     <h2>👋 No problem!</h2>
     <p>That is totally okay! This guide is here whenever you need it. Feel free to close this tab and come back anytime you want to learn the basics of coding from scratch.</p>
@@ -143,7 +205,7 @@
 <div id="main-content">
 
   <h1>🚀 How to Become a Developer!</h1>
-  <p class="hope">💜 I hope this helps you on your coding journey!</p>
+  <p class="hope" id="welcome-message">💜 I hope this helps you on your coding journey!</p>
   <p class="intro">Hey! If you are 13 and have never coded before — this guide is made just for you. Read every step carefully and by the end you will have written real code and launched a real website! 😊</p>
 
   <div class="step">
@@ -255,96 +317,96 @@
   </div>
 
   <h2 class="section-title">🧰 Tools and Technologies Every Developer Should Know</h2>
-  <p class="section-intro">Now that you know the steps here are all the different tools, languages, and technologies used in the real world of coding. Do not try to learn all of these at once — just use this as a guide to know what exists and what you might want to learn next!</p>
+  <p class="section-intro">Now that you know the steps here are all the different tools, languages, and technologies used in the real world of coding. Do not try to learn all of these at once — just use this as a guide!</p>
 
   <div class="tool">
     <h3>🐍 Python</h3>
     <span class="tag">Beginner Friendly</span>
-    <p>Python is the best language to start with and one of the most powerful languages in the world. It is used for building websites, creating artificial intelligence, analyzing data, automating tasks, making games, and much more. Companies like Google, NASA, Netflix, and Instagram use Python every day. The best thing about Python is how clean and readable it is — it looks almost like plain English which makes it perfect for beginners.</p>
+    <p>Python is the best language to start with and one of the most powerful in the world. Used by Google, NASA, Netflix, and Instagram. Great for websites, AI, data, and automation.</p>
   </div>
 
   <div class="tool">
     <h3>🌐 HTML</h3>
     <span class="tag">Web Development</span>
-    <p>HTML is the foundation of every single webpage on the internet. You use it to label and structure content — headings, paragraphs, images, links, and buttons. Without HTML there would be no websites at all. It is one of the easiest things to learn in all of coding and most people get comfortable with the basics in just a day or two.</p>
+    <p>HTML is the foundation of every webpage. You use it to add headings, paragraphs, images, links, and buttons. Without HTML there would be no websites at all.</p>
   </div>
 
   <div class="tool">
     <h3>🎨 CSS</h3>
     <span class="tag">Web Development</span>
-    <p>CSS is what makes websites look beautiful. Without it every website would just be black text on a white background. With CSS you can change colors, fonts, sizes, layouts, add animations, and make websites look good on phones and tablets. This purple website you are reading right now is styled entirely with CSS!</p>
+    <p>CSS makes websites look beautiful. It controls colors, fonts, sizes, layouts, and animations. This purple website you are reading right now is styled entirely with CSS!</p>
   </div>
 
   <div class="tool">
     <h3>⚡ JavaScript</h3>
     <span class="tag">Web Development</span>
-    <p>JavaScript makes websites interactive. With it you can make buttons do things, show popups, validate forms, fetch data, create animations, and build games that run in the browser. It is the only programming language that runs directly in your browser and one of the most popular languages in the entire world.</p>
+    <p>JavaScript makes websites interactive. Buttons that do things, animations, forms, games in the browser — all JavaScript. One of the most popular languages in the world.</p>
   </div>
 
   <div class="tool">
     <h3>⚛️ React</h3>
     <span class="tag">Advanced Web Development</span>
-    <p>React is a JavaScript library created by Facebook that makes building big complicated websites much easier. It lets you break your website into small reusable pieces called components. React is used by Facebook, Instagram, Netflix, and Airbnb. Learning React after JavaScript is a huge boost to your career.</p>
+    <p>React is a JavaScript library by Facebook for building big websites with reusable components. Used by Facebook, Instagram, Netflix, and Airbnb.</p>
   </div>
 
   <div class="tool">
     <h3>🟢 Node.js</h3>
     <span class="tag">Back End Development</span>
-    <p>Node.js lets you use JavaScript on the server side of websites. Before Node.js JavaScript could only run in the browser. Node.js is incredibly fast and is used by Netflix, LinkedIn, Uber, and PayPal to handle millions of users at the same time.</p>
+    <p>Node.js lets you use JavaScript on the server side. Used by Netflix, LinkedIn, and Uber to handle millions of users at the same time.</p>
   </div>
 
   <div class="tool">
     <h3>🗄️ Databases</h3>
     <span class="tag">Back End Development</span>
-    <p>Almost every app needs to store information somewhere — user accounts, posts, messages, orders. That information lives in a database. SQL databases like MySQL store data in tables like a spreadsheet. NoSQL databases like MongoDB store data in a more flexible format. Understanding databases is essential for building any real app.</p>
+    <p>Databases store information for apps — accounts, posts, messages. SQL databases use tables like spreadsheets. NoSQL databases like MongoDB use a more flexible format.</p>
   </div>
 
   <div class="tool">
     <h3>🔧 Git and GitHub</h3>
     <span class="tag">Essential Tool</span>
-    <p>Git tracks every change you make to your code like a time machine. GitHub stores your code in the cloud so it is safe and accessible from anywhere. Every professional developer uses Git and GitHub every single day. It is not optional — it is as essential as knowing how to type.</p>
+    <p>Git tracks every change to your code like a time machine. GitHub stores it in the cloud. Every professional developer uses these every single day — they are not optional!</p>
   </div>
 
   <div class="tool">
     <h3>☁️ Cloud Platforms</h3>
     <span class="tag">Deployment</span>
-    <p>Cloud platforms like Microsoft Azure, Amazon Web Services, and Google Cloud are where you host and run your apps. They offer computing power, storage, databases, AI tools, and much more over the internet. You already used Azure in this guide! All three have free tiers perfect for students and beginners.</p>
+    <p>Azure, AWS, and Google Cloud host your apps on the internet. You already used Azure in this guide! All three have free tiers perfect for students.</p>
   </div>
 
   <div class="tool">
-    <h3>📱 Mobile App Development</h3>
-    <span class="tag">Mobile Development</span>
-    <p>Swift is used to build iPhone apps. Kotlin is used to build Android apps. React Native lets you use JavaScript to build apps for both at the same time. If you have ever had an idea for a phone app these are the tools you would use to build it!</p>
+    <h3>📱 Mobile Development</h3>
+    <span class="tag">Mobile</span>
+    <p>Swift builds iPhone apps. Kotlin builds Android apps. React Native builds both at once using JavaScript. If you have an app idea these are the tools to use!</p>
   </div>
 
   <div class="tool">
     <h3>🤖 Artificial Intelligence</h3>
     <span class="tag">Advanced</span>
-    <p>AI and machine learning are the most exciting areas of coding right now. Python is the main language used and there are free libraries like TensorFlow and PyTorch that make it easier. AI is being used to build chatbots, self driving cars, medical tools, music generators, and much more. This is the future of technology!</p>
+    <p>AI and machine learning are the most exciting areas of coding right now. Python is the main language. Used for chatbots, self driving cars, medical tools, and image generation.</p>
   </div>
 
   <div class="tool">
     <h3>🎮 Game Development</h3>
-    <span class="tag">Game Development</span>
-    <p>Unity uses C# and is great for 2D and 3D games including mobile games. Unreal Engine uses C++ and is used by big studios for AAA games. Pygame lets you make simple 2D games using Python which is perfect for beginners. If making games is your dream these are the tools to look into!</p>
+    <span class="tag">Games</span>
+    <p>Unity uses C# for 2D and 3D games. Unreal Engine uses C++ for big AAA games. Pygame lets you make simple games in Python — perfect for beginners!</p>
   </div>
 
   <div class="tool">
     <h3>🔒 Cybersecurity</h3>
     <span class="tag">Security</span>
-    <p>Cybersecurity is about protecting computers and data from hackers. Ethical hackers are paid to legally try to break into systems to find weaknesses before real hackers do. A great free place to start learning is TryHackMe which teaches cybersecurity in a fun game-like way perfect for beginners.</p>
+    <p>Cybersecurity protects computers from hackers. Ethical hackers are paid to legally find weaknesses. Try TryHackMe — a free game-like platform for learning security!</p>
   </div>
 
   <div class="tool">
     <h3>📊 Data Science</h3>
     <span class="tag">Data</span>
-    <p>Data science is about analyzing data to find useful patterns and insights. Python is the main language along with libraries like Pandas, Matplotlib, and NumPy. Data scientists are in huge demand and the pay is excellent. If you enjoy math and finding patterns in information this could be a great path!</p>
+    <p>Data science finds patterns in information. Python with Pandas, Matplotlib, and NumPy are the main tools. Data scientists are in huge demand with excellent pay!</p>
   </div>
 
   <div class="tool">
     <h3>🧪 APIs</h3>
     <span class="tag">Essential Concept</span>
-    <p>An API is a way for different programs to talk to each other. Weather apps use weather APIs. Login with Google uses an API. Pay with PayPal uses an API. Virtually every modern app uses multiple APIs and knowing how to use them opens up enormous possibilities for what you can build!</p>
+    <p>APIs let programs talk to each other. Weather apps, Sign in with Google, Pay with PayPal — all APIs. Knowing how to use them opens up enormous possibilities for what you can build!</p>
   </div>
 
   <footer>
@@ -354,35 +416,93 @@
 </div>
 
 <script>
-  function beginnerYes() {
-    showScreen('screen-2a');
-  }
+  let userName = '';
 
-  function beginnerNo() {
-    showScreen('screen-2b');
-  }
+  const tips = [
+    "Code a little bit every single day — even 20 minutes adds up to over 100 hours a year!",
+    "When your code breaks do not panic — every developer deals with bugs every single day. Just read the error message carefully!",
+    "The best way to get better at coding is to build real projects. Stop watching and start making!",
+    "Google is your best friend as a developer. Even senior engineers look things up constantly — that is totally normal!",
+    "Push your code to GitHub after every session. You will thank yourself later if something goes wrong!",
+    "Try freeCodeCamp on YouTube — it has free full courses on Python, HTML, CSS, and JavaScript!",
+    "Do not try to learn everything at once. Master one language first then move on to the next!",
+    "Reading other people's code is one of the best ways to learn. Look at open source projects on GitHub!",
+    "Take breaks when you are stuck. Sometimes the solution comes to you when you stop staring at the screen!",
+    "Join a coding Discord community — there are thousands of friendly developers who love helping beginners!",
+    "Variables, loops, and functions are the three most important things in all of coding. Make sure you really understand them!",
+    "Your first projects do not have to be perfect. Just finish them and push them to GitHub — done is better than perfect!",
+    "Harvard CS50 on YouTube is one of the best free coding courses in the world. Check it out when you have time!",
+    "Learning to read error messages is a superpower. They tell you exactly what went wrong and where!",
+    "Try to code something that you actually care about — it is way more fun to build things you are interested in!",
+    "W3Schools at w3schools.com is great for quickly looking up how to do something in HTML, CSS, or Python!",
+    "The GitHub Student Developer Pack gives students free access to hundreds of dollars worth of coding tools — sign up if you are a student!",
+    "Practice typing code by hand rather than copying and pasting — your fingers will memorize the patterns much faster!",
+    "Every expert was once a beginner. The only difference between you and a pro developer is time and practice!",
+    "Comment your code as you write it — notes that explain what each part does will save you a huge amount of confusion later!",
+  ];
 
-  function surveyAnswer(answer) {
-    showScreen('screen-3');
-  }
+  let tipIndex = 0;
+  const shuffled = tips.sort(() => Math.random() - 0.5);
 
-  function notBeginnerYes() {
-    goToMain();
-  }
-
-  function notBeginnerNo() {
-    showScreen('screen-4');
-  }
-
-  function goToMain() {
-    document.getElementById('survey-container').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-    window.scrollTo(0, 0);
-  }
+  function beginnerYes() { showScreen('screen-2a'); }
+  function beginnerNo() { showScreen('screen-2b'); }
+  function surveyAnswer() { showScreen('screen-3'); }
+  function notBeginnerYes() { showNamePopup(); }
+  function notBeginnerNo() { showScreen('screen-4'); }
 
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+  }
+
+  function showNamePopup() {
+    document.getElementById('survey-container').style.display = 'none';
+    document.getElementById('name-popup').classList.add('show');
+    document.getElementById('name-input').focus();
+  }
+
+  document.getElementById('name-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitName();
+  });
+
+  function submitName() {
+    const input = document.getElementById('name-input').value.trim();
+    userName = input.length > 0 ? input : 'Friend';
+    document.getElementById('name-popup').classList.remove('show');
+    goToMain();
+  }
+
+  function goToMain() {
+    document.getElementById('survey-container').style.display = 'none';
+    document.getElementById('name-popup').classList.remove('show');
+    document.getElementById('main-content').style.display = 'block';
+    document.getElementById('welcome-message').textContent = '💜 Hey ' + userName + '! I hope this helps you on your coding journey!';
+    window.scrollTo(0, 0);
+
+    // Show first tip after 60 seconds, then every 60 seconds
+    setTimeout(() => {
+      showTip();
+      setInterval(showTip, 60000);
+    }, 60000);
+  }
+
+  function showTip() {
+    const tip = shuffled[tipIndex % shuffled.length];
+    tipIndex++;
+    document.getElementById('tip-title').textContent = 'Hey ' + userName + '! 👋 Quick tip for you:';
+    document.getElementById('tip-text').textContent = tip;
+    const popup = document.getElementById('tip-popup');
+    popup.style.display = 'block';
+    popup.style.animation = 'none';
+    popup.offsetHeight; // reflow
+    popup.style.animation = 'slideDown 0.4s ease';
+
+    // Auto hide after 10 seconds
+    setTimeout(closeTip, 10000);
+  }
+
+  function closeTip() {
+    document.getElementById('tip-popup').style.display = 'none';
   }
 </script>
 
