@@ -1,510 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>How to Become a Developer</title>
+  <title>1-on-1 Code Lessons</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0f1117;
+      --surface: #1a1d27;
+      --card:    #22263a;
+      --accent:  #6c63ff;
+      --accent2: #a78bfa;
+      --text:    #e8eaf0;
+      --muted:   #8b90a7;
+      --success: #34d399;
+      --error:   #f87171;
+      --border:  #2e3250;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f0ff;
-      color: #333;
-      padding: 30px 20px 60px 20px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
     }
 
-    /* SURVEY STYLES */
-    #survey-container {
-      max-width: 600px;
-      margin: 100px auto;
-      background: white;
-      border: 3px solid #7c3aed;
-      border-radius: 20px;
-      padding: 40px;
-      text-align: center;
-    }
-    #survey-container h2 { color: #7c3aed; font-size: 1.8rem; margin-bottom: 20px; }
-    #survey-container p { font-size: 1.1rem; color: #555; margin-bottom: 30px; line-height: 1.7; }
-    .btn { display: inline-block; padding: 14px 30px; margin: 10px; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: transform 0.1s; }
-    .btn:hover { transform: scale(1.05); }
-    .btn-yes { background-color: #7c3aed; color: white; }
-    .btn-no { background-color: #e5e7eb; color: #333; }
-    .btn-option { display: block; width: 100%; padding: 14px 20px; margin: 8px 0; border: 2px solid #7c3aed; border-radius: 10px; font-size: 1rem; cursor: pointer; background: white; color: #333; text-align: left; transition: background 0.2s; }
-    .btn-option:hover { background-color: #ede9fe; }
-    .screen { display: none; }
-    .screen.active { display: block; }
+    .page { display: none; }
+    .page.active { display: block; }
 
-    /* NAME POPUP */
-    #name-popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-    #name-popup.show { display: flex; }
-    #name-box {
-      background: white;
-      border: 3px solid #7c3aed;
-      border-radius: 20px;
-      padding: 40px;
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-    }
-    #name-box h2 { color: #7c3aed; font-size: 1.8rem; margin-bottom: 15px; }
-    #name-box p { color: #555; font-size: 1.1rem; margin-bottom: 25px; }
-    #name-input {
-      width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
-      border: 2px solid #7c3aed;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      outline: none;
-      text-align: center;
-    }
-    #name-input:focus { border-color: #5b21b6; }
-    #name-submit {
-      background: #7c3aed;
-      color: white;
-      border: none;
-      padding: 14px 40px;
-      font-size: 1.1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #name-submit:hover { background: #5b21b6; }
+    #page-landing { min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* TIP POPUP */
-    #tip-popup {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #7c3aed;
-      color: white;
-      padding: 18px 30px;
-      border-radius: 15px;
-      max-width: 600px;
-      width: 90%;
-      z-index: 50;
-      text-align: center;
-      font-size: 1rem;
-      line-height: 1.6;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-      animation: slideDown 0.4s ease;
+    .hero {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 80px 24px 60px; text-align: center;
+      position: relative; overflow: hidden;
     }
-    #tip-popup strong { font-size: 1.1rem; display: block; margin-bottom: 6px; }
-    #tip-close {
-      position: absolute;
-      top: 8px; right: 14px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.3rem;
-      cursor: pointer;
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(108,99,255,0.22), transparent);
+      pointer-events: none;
     }
-    @keyframes slideDown {
-      from { top: -80px; opacity: 0; }
-      to { top: 20px; opacity: 1; }
+    .badge {
+      display: inline-block; background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.4); color: var(--accent2);
+      font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; padding: 6px 18px;
+      border-radius: 999px; margin-bottom: 28px;
     }
-
-    /* MAIN WEBSITE STYLES */
-    #main-content { display: none; }
-    h1 { color: #7c3aed; font-size: 2.5rem; text-align: center; margin-bottom: 10px; }
-    h2.section-title { color: #7c3aed; font-size: 2rem; text-align: center; margin: 50px 0 20px 0; }
-    p.intro { text-align: center; font-size: 1.2rem; color: #555; margin-bottom: 30px; }
-    p.hope { text-align: center; font-size: 1.3rem; color: #7c3aed; font-weight: bold; margin-bottom: 30px; }
-    p.section-intro { text-align: center; font-size: 1.1rem; color: #555; margin-bottom: 30px; }
-    .step { background-color: #ffffff; border: 3px solid #7c3aed; border-radius: 15px; padding: 25px; margin-bottom: 20px; }
-    .step h2 { color: #7c3aed; font-size: 1.4rem; margin-bottom: 12px; }
-    .step p { font-size: 1.1rem; line-height: 1.9; }
-    .tip { background-color: #ede9fe; border-left: 5px solid #7c3aed; padding: 12px 16px; border-radius: 8px; margin-top: 12px; font-size: 1rem; }
-    .tool { background-color: #ffffff; border: 3px solid #7c3aed; border-radius: 15px; padding: 25px; margin-bottom: 20px; }
-    .tool h3 { color: #7c3aed; font-size: 1.3rem; margin-bottom: 10px; }
-    .tool p { font-size: 1.1rem; line-height: 1.9; }
-    .tool .tag { display: inline-block; background-color: #7c3aed; color: white; font-size: 0.8rem; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
-    code { background: #ede9fe; padding: 4px 10px; border-radius: 5px; font-size: 1rem; color: #5b21b6; }
-    footer { text-align: center; margin-top: 40px; color: #aaa; }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800;
+      line-height: 1.15; max-width: 700px; margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 40%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-pitch {
+      font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--muted);
+      max-width: 620px; line-height: 1.9; margin-bottom: 52px;
+    }
+    .hero-pitch strong { color: var(--text); }
+    .features {
+      display: flex; flex-wrap: wrap; gap: 16px;
+      justify-content: center; max-width: 740px; margin-bottom: 64px;
+    }
+    .feature-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 24px; width: 210px; text-align: left;
+    }
+    .feature-card .icon { font-size: 26px; margin-bottom: 10px; }
+    .feature-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .scroll-hint {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 8px; color: var(--muted); font-size: 13px;
+      animation: bob 2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(7px); }
+    }
+    .cta-section {
+      padding: 80px 24px; display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      border-top: 1px solid var(--border); background: var(--surface);
+    }
+    .cta-section h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; margin-bottom: 12px; }
+    .cta-section p { color: var(--muted); max-width: 460px; margin-bottom: 32px; font-size: 15px; line-height: 1.7; }
+    .step-page {
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; padding: 24px; position: relative;
+    }
+    .step-page::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(108,99,255,0.1), transparent);
+      pointer-events: none;
+    }
+    .step-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px 40px;
+      width: 100%; max-width: 460px; position: relative;
+    }
+    .progress-dots { display: flex; gap: 6px; margin-bottom: 32px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.3s, transform 0.3s; }
+    .dot.active { background: var(--accent); transform: scale(1.3); }
+    .dot.done { background: var(--success); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.35); border-radius: 50%;
+      font-size: 14px; font-weight: 700; color: var(--accent2); margin-bottom: 20px;
+    }
+    .step-card h2 { font-size: 1.55rem; font-weight: 800; margin-bottom: 8px; }
+    .step-card .sub { color: var(--muted); font-size: 14px; line-height: 1.65; margin-bottom: 32px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 12px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%; padding: 14px 16px; background: var(--card);
+      border: 1.5px solid var(--border); border-radius: 10px;
+      color: var(--text); font-size: 15px; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108,99,255,0.15); }
+    .form-group input.error { border-color: var(--error); }
+    .err-msg { color: var(--error); font-size: 13px; margin-top: 6px; display: none; }
+    .err-msg.show { display: block; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 14px 28px; border-radius: 12px; font-size: 15px;
+      font-weight: 700; cursor: pointer; border: none; transition: all 0.2s;
+      width: 100%; margin-top: 8px;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #5a52e0; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,0.3); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); margin-top: 12px; }
+    .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+    .success-icon {
+      width: 72px; height: 72px; background: rgba(52,211,153,0.1);
+      border: 2px solid var(--success); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; margin: 0 auto 24px;
+    }
+    .info-box {
+      background: rgba(108,99,255,0.08); border: 1px solid rgba(108,99,255,0.25);
+      border-radius: 10px; padding: 14px 16px; font-size: 14px;
+      color: var(--muted); line-height: 1.65; margin-top: 20px;
+    }
+    .info-box strong { color: var(--text); }
   </style>
 </head>
 <body>
 
-<!-- TIP POPUP -->
-<div id="tip-popup">
-  <button id="tip-close" onclick="closeTip()">✕</button>
-  <strong id="tip-title"></strong>
-  <span id="tip-text"></span>
+<div id="page-landing" class="page active">
+  <section class="hero">
+    <div class="badge">🎓 Limited Spots Available</div>
+    <h1>Learn to Code with a Personal Mentor, Not a Video</h1>
+    <p class="hero-pitch">
+      Most people trying to learn to code get stuck watching tutorials they barely follow,
+      copying code they don't understand, and quitting before they ever build anything real.
+      <br><br>
+      <strong>That ends here.</strong> In a 1-on-1 lesson you get a real person who looks
+      at <em>your</em> code, answers <em>your</em> questions, and teaches at <em>your</em> pace.
+      No pre-recorded fluff — just focused, personal teaching that gets you from confused to confident, fast.
+      <br><br>
+      Whether you're a complete beginner or someone stuck at the same level for months,
+      a single session will move you further than weeks of solo grinding.
+    </p>
+    <div class="features">
+      <div class="feature-card"><div class="icon">🎯</div><h3>Tailored to You</h3><p>Lessons built around your goals, your level, and your learning style.</p></div>
+      <div class="feature-card"><div class="icon">💬</div><h3>Ask Anything</h3><p>No dumb questions. Real answers in real time from a real person.</p></div>
+      <div class="feature-card"><div class="icon">⚡</div><h3>Learn Faster</h3><p>Progress faster than self-teaching with direct expert feedback.</p></div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll down to sign up</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+  <section class="cta-section">
+    <h2>Ready to actually learn?</h2>
+    <p>Sign up takes under a minute. We'll get your first session scheduled right away.</p>
+    <button class="btn btn-primary" style="width:auto;padding:14px 36px" onclick="show('name')">Get Started →</button>
+  </section>
 </div>
 
-<!-- NAME POPUP -->
-<div id="name-popup">
-  <div id="name-box">
-    <h2>👋 One more thing!</h2>
-    <p>What is your name? We want to make this experience just for you!</p>
-    <input type="text" id="name-input" placeholder="Type your name here..." maxlength="30" />
-    <br>
-    <button id="name-submit" onclick="submitName()">Let's Go! 🚀</button>
-  </div>
+<div id="page-name" class="page">
+  <div class="step-page"><div class="step-card">
+    <div class="progress-dots"><div class="dot active"></div><div class="dot"></div></div>
+    <div class="step-num">1</div>
+    <h2>What's your name?</h2>
+    <p class="sub">We'll use this to personalise your experience.</p>
+    <div class="form-group">
+      <label for="inp-name">Full Name</label>
+      <input id="inp-name" type="text" placeholder="e.g. Alex Johnson" autocomplete="name"/>
+      <div class="err-msg" id="err-name">Please enter your first and last name.</div>
+    </div>
+    <button class="btn btn-primary" onclick="submitName()">Continue →</button>
+  </div></div>
 </div>
 
-<!-- SURVEY SECTION -->
-<div id="survey-container">
-
-  <div id="screen-1" class="screen active">
-    <h2>👋 Welcome!</h2>
-    <p>Before we get started, we just have a quick question for you!</p>
-    <p><strong>Are you a beginner in developing code?</strong></p>
-    <button class="btn btn-yes" onclick="beginnerYes()">✅ Yes</button>
-    <button class="btn btn-no" onclick="beginnerNo()">❌ No</button>
-  </div>
-
-  <div id="screen-2a" class="screen">
-    <h2>🎉 Ok, let's begin!</h2>
-    <p>Amazing! You are in the right place. Before we take you to the guide, we just want to ask — <strong>how did you find out about this website?</strong></p>
-    <button class="btn-option" onclick="surveyAnswer()">👫 A friend told me</button>
-    <button class="btn-option" onclick="surveyAnswer()">🔍 I found it on Google</button>
-    <button class="btn-option" onclick="surveyAnswer()">📱 I saw it on social media</button>
-    <button class="btn-option" onclick="surveyAnswer()">🏫 A teacher or school recommended it</button>
-    <button class="btn-option" onclick="surveyAnswer()">📺 I saw it on YouTube</button>
-    <button class="btn-option" onclick="surveyAnswer()">👨‍👩‍👧 Someone in my family showed me</button>
-    <button class="btn-option" onclick="surveyAnswer()">🎲 I just randomly found it</button>
-    <button class="btn-option" onclick="surveyAnswer()">💬 Other</button>
-  </div>
-
-  <div id="screen-2b" class="screen">
-    <h2>👀 Heads up!</h2>
-    <p>This website is designed for <strong>complete beginners</strong> who have never coded before. It covers the very basics of coding from scratch.</p>
-    <p>Would you still like to continue?</p>
-    <button class="btn btn-yes" onclick="notBeginnerYes()">✅ Yes, I still want to look around</button>
-    <button class="btn btn-no" onclick="notBeginnerNo()">❌ No, I'll close the tab</button>
-  </div>
-
-  <div id="screen-3" class="screen">
-    <h2>🙏 Thanks for letting us know!</h2>
-    <p>That is really helpful! We hope you enjoy the guide and learn loads!</p>
-    <p>Click below when you are ready to start your coding journey!</p>
-    <button class="btn btn-yes" onclick="showNamePopup()">🚀 Let's Go!</button>
-  </div>
-
-  <div id="screen-4" class="screen">
-    <h2>👋 No problem!</h2>
-    <p>That is totally okay! This guide is here whenever you need it. Feel free to close this tab and come back anytime you want to learn the basics of coding from scratch.</p>
-    <p style="margin-top:20px; color:#7c3aed; font-weight:bold;">You can now close this tab. See you next time! 😊</p>
-  </div>
-
+<div id="page-email" class="page">
+  <div class="step-page"><div class="step-card">
+    <div class="progress-dots"><div class="dot done"></div><div class="dot active"></div></div>
+    <div class="step-num">2</div>
+    <h2>What's your email?</h2>
+    <p class="sub" id="email-sub">We'll send your session details here.</p>
+    <div class="form-group">
+      <label for="inp-email">Email Address</label>
+      <input id="inp-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+      <div class="err-msg" id="err-email">Please enter a valid email address.</div>
+    </div>
+    <button class="btn btn-primary" onclick="submitEmail()">Complete Sign Up →</button>
+  </div></div>
 </div>
 
-<!-- MAIN WEBSITE CONTENT -->
-<div id="main-content">
+<div id="page-success" class="page">
+  <div class="step-page"><div class="step-card" style="text-align:center">
+    <div class="success-icon">✓</div>
+    <h2>You're in!</h2>
+    <p class="sub" id="success-msg">We'll be in touch soon to get your first lesson scheduled.</p>
+  </div></div>
+</div>
 
-  <h1>🚀 How to Become a Developer!</h1>
-  <p class="hope" id="welcome-message">💜 I hope this helps you on your coding journey!</p>
-  <p class="intro">Hey! If you are 13 and have never coded before — this guide is made just for you. Read every step carefully and by the end you will have written real code and launched a real website! 😊</p>
-
-  <div class="step">
-    <h2>Step 1 — What Even Is a Developer? 💻</h2>
-    <p>A developer is someone who writes code to build things. That means the apps on your phone, the websites you visit, the games you play, and even the software that runs schools and hospitals — all of that was built by developers. Code is basically a set of instructions you give to a computer. Computers are incredibly fast and powerful but they can only do exactly what you tell them. Learning to code means learning how to give those instructions. There are different types of developers. A <strong>front end developer</strong> builds the parts of websites you can see — buttons, text, images, colors. A <strong>back end developer</strong> builds the invisible stuff behind the scenes like databases and servers. A <strong>full stack developer</strong> does both. You do not need to pick one right now. Just know that coding is one of the most useful skills you can ever learn and starting at 13 is an amazing head start!</p>
-    <div class="tip">💡 Tip: You do not need to be a math genius to code. Most coding is just logical thinking and problem solving — something anyone can learn!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 2 — Pick Your First Programming Language 🐍</h2>
-    <p>A programming language is how you talk to a computer. There are hundreds of them but you only need to learn one to start. The absolute best one for beginners is <strong>Python</strong>. Python looks almost like plain English which makes it so much easier to understand than other languages. When you write Python code it reads almost like a sentence which means you can focus on learning how to think like a programmer instead of getting confused by complicated symbols. Python is also used by real companies like Google, NASA, Netflix, Instagram, YouTube, and Spotify. It is used for building websites, creating AI, analyzing data, automating boring tasks, and much more. By learning Python you are not just learning a toy language — you are learning something that real professionals use every single day.</p>
-    <div class="tip">💡 Tip: Do not try to learn multiple languages at once. Master Python first and other languages will become way easier to learn later!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 3 — Download Your Code Editor 🛠️</h2>
-    <p>You need somewhere to write your code and that place is called a <strong>code editor</strong>. Think of it like a super powered version of Notepad made specifically for writing code. The best free one is called <strong>Visual Studio Code</strong> — most people just call it VS Code. Go to <strong>code.visualstudio.com</strong> and download it. VS Code color codes your text so different parts show up in different colors making it way easier to read. It underlines mistakes in red, suggests what you might want to type next, and has a built in terminal so you can run your code without ever leaving the app. VS Code is completely free and is used by millions of professional developers around the world.</p>
-    <div class="tip">💡 Tip: When you open VS Code for the first time it might look overwhelming. Do not worry — you only need a tiny bit of it to get started!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 4 — Install Python on Your Computer 🐍</h2>
-    <p>Writing Python is one thing but your computer also needs to be able to actually <strong>run</strong> your Python code. Go to <strong>python.org/downloads</strong> and click the big download button. Open the installer and follow the steps. The most important thing — check the box that says <strong>Add Python to PATH</strong> before clicking Install. If you forget this your computer will not be able to find Python. Once installed open the terminal in VS Code and type <code>python3 --version</code> and press Enter. If it shows a version number like Python 3.12 then you did it correctly. Congratulations!</p>
-    <div class="tip">💡 Tip: If you forgot to check Add Python to PATH just uninstall Python and install it again — this time checking that box!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 5 — Write Your Very First Program 🎉</h2>
-    <p>Open VS Code and create a new file called <strong>hello.py</strong>. Type this exact line of code:<br><br>
-    <code>print("Hello, World!")</code><br><br>
-    Save with Cmd+S (Mac) or Ctrl+S (Windows). Open the terminal and type <code>python3 hello.py</code> and press Enter. You will see <strong>Hello, World!</strong> on your screen. Your computer just did exactly what you told it to do! This is the Hello World program and every single developer in the world wrote this exact thing when they first started. You are officially a developer now! 🥳</p>
-    <div class="tip">💡 Tip: If you get an error saying command not found try typing python hello.py instead of python3 hello.py</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 6 — Learn About Variables 📦</h2>
-    <p>A variable is like a labeled box that stores information. You give it a name and put something inside. For example:<br><br>
-    <code>name = "Mahi"</code> — stores the word Mahi<br><br>
-    <code>age = 13</code> — stores the number 13<br><br>
-    <code>is_cool = True</code> — stores True<br><br>
-    Once stored you can use the variable anywhere by just typing its name. Type <code>print(name)</code> and your computer prints Mahi. Variables can store words, numbers, lists, and much more. You will use them in every single program you ever write!</p>
-    <div class="tip">💡 Tip: Give your variables clear names. name is better than n and user_age is better than x!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 7 — Learn About Loops 🔁</h2>
-    <p>A loop tells your computer to repeat something over and over. Instead of typing <code>print("Hello")</code> 100 times you can write:<br><br>
-    <code>for i in range(100):</code><br>
-    <code>&nbsp;&nbsp;&nbsp;&nbsp;print("Hello")</code><br><br>
-    Those two lines print Hello 100 times! A <strong>for loop</strong> repeats something a specific number of times. A <strong>while loop</strong> keeps repeating as long as something is true. Loops are used in almost every program ever created!</p>
-    <div class="tip">💡 Tip: Be careful with while loops — if the condition is always true your loop will run forever and your program will freeze!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 8 — Learn About Functions 🧩</h2>
-    <p>A function is a block of code you write once and use as many times as you want. Here is what one looks like:<br><br>
-    <code>def say_hello():</code><br>
-    <code>&nbsp;&nbsp;&nbsp;&nbsp;print("Hey there!")</code><br><br>
-    Now whenever you type <code>say_hello()</code> anywhere in your program it prints Hey there! Functions keep your code short, neat, and easy to fix. Learning functions is a huge milestone — it is when you start writing code like a real developer!</p>
-    <div class="tip">💡 Tip: If you are copy pasting the same code more than twice it should probably be a function instead!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 9 — Understand How Websites Work 🌐</h2>
-    <p>When you type a website address into your browser your computer sends a <strong>request</strong> to a <strong>server</strong> somewhere in the world. The server finds the right files and sends them back. Your browser reads those files and turns them into the website you see. Every website is built with three things — <strong>HTML</strong> creates the structure, <strong>CSS</strong> makes it look nice, and <strong>JavaScript</strong> makes it interactive. Every website you have ever visited was built with these three things!</p>
-    <div class="tip">💡 Tip: Right click on any website and click View Page Source to see the actual code behind it!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 10 — Learn HTML and CSS 🎨</h2>
-    <p><strong>HTML</strong> is the skeleton of every webpage. With it you add headings, paragraphs, images, links, and buttons. <strong>CSS</strong> makes your webpage look amazing — it controls colors, fonts, sizes, spacing, layouts, and animations. Together they are the foundation of all web development. They are also much easier to learn than Python so most people pick up the basics in just a few days. The page you are reading right now was built entirely with HTML and CSS!</p>
-    <div class="tip">💡 Tip: W3Schools at w3schools.com is amazing for learning HTML and CSS with interactive examples!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 11 — Use Free Learning Resources Every Day 📚</h2>
-    <p>You do not need to spend any money to learn coding. <strong>freeCodeCamp on YouTube</strong> has full beginner courses on Python, HTML, CSS, and JavaScript. <strong>W3Schools</strong> lets you look up how to do anything with interactive examples. <strong>Harvard CS50</strong> is a free university course that teaches you how to think like a programmer. <strong>Khan Academy</strong> has great beginner lessons too. Even just 20 to 30 minutes every day adds up to over 100 hours of learning per year!</p>
-    <div class="tip">💡 Tip: Do not just watch tutorials — pause and actually type the code yourself. That is how your brain really learns it!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 12 — Create a GitHub Account 💾</h2>
-    <p>GitHub is like Google Drive but for code. It stores all your projects safely in the cloud so you never lose them. Every project is called a <strong>repository</strong> or repo. As you build more projects your GitHub becomes an online portfolio that shows employers everything you have created. Go to <strong>github.com</strong> and make a free account. Starting your GitHub at 13 means by the time you apply for jobs you will have years of projects to show!</p>
-    <div class="tip">💡 Tip: Pick a professional username — something like your name or initials. Avoid silly names you might regret later!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 13 — Save Your Code to GitHub ⬆️</h2>
-    <p>Pushing code to GitHub is done through <strong>Git</strong> — a system that tracks every change you make like a time machine for your code. In VS Code open the <strong>Source Control</strong> panel, stage your files, write a commit message describing what you changed, click Commit, then click Push. Your code appears on GitHub within seconds. Every time you add something new or fix a bug repeat this process. It becomes totally automatic after a few times!</p>
-    <div class="tip">💡 Tip: Write clear commit messages like add calculator feature not just update or fix stuff!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 14 — Build Real Projects 🏗️</h2>
-    <p>You cannot get good at coding just by watching videos. You have to build real things. Start with a <strong>calculator</strong> in Python, then a <strong>quiz game</strong>, then a <strong>to-do list app</strong>. Each project will teach you things no tutorial ever could. You will hit bugs and errors — figuring out how to fix them is where the real learning happens. Every professional developer got good by building project after project. Start building now!</p>
-    <div class="tip">💡 Tip: When you finish a project push it to GitHub! Even small simple projects count as real portfolio work!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 15 — Put Your Website on the Internet 🌍</h2>
-    <p>Deploying your website means putting it live on the internet so anyone can visit it. <strong>GitHub Pages</strong> is the easiest free option — go to your repo settings, find Pages, set branch to main, and save. Your site goes live at yourusername.github.io/reponame in about a minute. <strong>Microsoft Azure Static Web Apps</strong> is another free option that automatically updates your live site every time you push new code to GitHub. Having a real live website with a real link is one of the best feelings you will ever have as a developer!</p>
-    <div class="tip">💡 Tip: Share your live website link with friends and family — seeing real people visit something you built is amazing!</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 16 — Keep Going Every Single Day! 💪</h2>
-    <p>Learning to code is a journey that never truly ends — and that is actually one of the coolest things about it. There is always something new to discover. The developers who get really good are not the smartest people — they are the ones who show up every day and keep learning even when it is hard. Code every single day even if it is just 20 minutes. Watch tutorials. Build projects. Join Discord communities. Follow developers on social media. And never give up when something does not work — bugs and errors are completely normal and every developer deals with them every single day. You started at 13 which already puts you ahead of most people. Keep going and one day you will look back at this moment and be so proud of how far you have come. You got this! 🌟</p>
-    <div class="tip">💡 Tip: The best time to start was yesterday. The second best time is right now. Go write some code!</div>
-  </div>
-
-  <h2 class="section-title">🧰 Tools and Technologies Every Developer Should Know</h2>
-  <p class="section-intro">Now that you know the steps here are all the different tools, languages, and technologies used in the real world of coding. Do not try to learn all of these at once — just use this as a guide!</p>
-
-  <div class="tool">
-    <h3>🐍 Python</h3>
-    <span class="tag">Beginner Friendly</span>
-    <p>Python is the best language to start with and one of the most powerful in the world. Used by Google, NASA, Netflix, and Instagram. Great for websites, AI, data, and automation.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🌐 HTML</h3>
-    <span class="tag">Web Development</span>
-    <p>HTML is the foundation of every webpage. You use it to add headings, paragraphs, images, links, and buttons. Without HTML there would be no websites at all.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🎨 CSS</h3>
-    <span class="tag">Web Development</span>
-    <p>CSS makes websites look beautiful. It controls colors, fonts, sizes, layouts, and animations. This purple website you are reading right now is styled entirely with CSS!</p>
-  </div>
-
-  <div class="tool">
-    <h3>⚡ JavaScript</h3>
-    <span class="tag">Web Development</span>
-    <p>JavaScript makes websites interactive. Buttons that do things, animations, forms, games in the browser — all JavaScript. One of the most popular languages in the world.</p>
-  </div>
-
-  <div class="tool">
-    <h3>⚛️ React</h3>
-    <span class="tag">Advanced Web Development</span>
-    <p>React is a JavaScript library by Facebook for building big websites with reusable components. Used by Facebook, Instagram, Netflix, and Airbnb.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🟢 Node.js</h3>
-    <span class="tag">Back End Development</span>
-    <p>Node.js lets you use JavaScript on the server side. Used by Netflix, LinkedIn, and Uber to handle millions of users at the same time.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🗄️ Databases</h3>
-    <span class="tag">Back End Development</span>
-    <p>Databases store information for apps — accounts, posts, messages. SQL databases use tables like spreadsheets. NoSQL databases like MongoDB use a more flexible format.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🔧 Git and GitHub</h3>
-    <span class="tag">Essential Tool</span>
-    <p>Git tracks every change to your code like a time machine. GitHub stores it in the cloud. Every professional developer uses these every single day — they are not optional!</p>
-  </div>
-
-  <div class="tool">
-    <h3>☁️ Cloud Platforms</h3>
-    <span class="tag">Deployment</span>
-    <p>Azure, AWS, and Google Cloud host your apps on the internet. You already used Azure in this guide! All three have free tiers perfect for students.</p>
-  </div>
-
-  <div class="tool">
-    <h3>📱 Mobile Development</h3>
-    <span class="tag">Mobile</span>
-    <p>Swift builds iPhone apps. Kotlin builds Android apps. React Native builds both at once using JavaScript. If you have an app idea these are the tools to use!</p>
-  </div>
-
-  <div class="tool">
-    <h3>🤖 Artificial Intelligence</h3>
-    <span class="tag">Advanced</span>
-    <p>AI and machine learning are the most exciting areas of coding right now. Python is the main language. Used for chatbots, self driving cars, medical tools, and image generation.</p>
-  </div>
-
-  <div class="tool">
-    <h3>🎮 Game Development</h3>
-    <span class="tag">Games</span>
-    <p>Unity uses C# for 2D and 3D games. Unreal Engine uses C++ for big AAA games. Pygame lets you make simple games in Python — perfect for beginners!</p>
-  </div>
-
-  <div class="tool">
-    <h3>🔒 Cybersecurity</h3>
-    <span class="tag">Security</span>
-    <p>Cybersecurity protects computers from hackers. Ethical hackers are paid to legally find weaknesses. Try TryHackMe — a free game-like platform for learning security!</p>
-  </div>
-
-  <div class="tool">
-    <h3>📊 Data Science</h3>
-    <span class="tag">Data</span>
-    <p>Data science finds patterns in information. Python with Pandas, Matplotlib, and NumPy are the main tools. Data scientists are in huge demand with excellent pay!</p>
-  </div>
-
-  <div class="tool">
-    <h3>🧪 APIs</h3>
-    <span class="tag">Essential Concept</span>
-    <p>APIs let programs talk to each other. Weather apps, Sign in with Google, Pay with PayPal — all APIs. Knowing how to use them opens up enormous possibilities for what you can build!</p>
-  </div>
-
-  <footer>
-    <p>Made by Mahi 🌟</p>
-  </footer>
-
+<div id="page-already" class="page">
+  <div class="step-page"><div class="step-card" style="text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">👋</div>
+    <h2>Welcome back!</h2>
+    <p class="sub">You've already signed up — we haven't forgotten about you!</p>
+    <div class="info-box" id="already-info"></div>
+    <button class="btn btn-ghost" onclick="restart()">Use a different account</button>
+  </div></div>
 </div>
 
 <script>
-  let userName = '';
+  const STORAGE_KEY = 'codeLesson_v1';
+  let name = '', email = '';
 
-  const tips = [
-    "Code a little bit every single day — even 20 minutes adds up to over 100 hours a year!",
-    "When your code breaks do not panic — every developer deals with bugs every single day. Just read the error message carefully!",
-    "The best way to get better at coding is to build real projects. Stop watching and start making!",
-    "Google is your best friend as a developer. Even senior engineers look things up constantly — that is totally normal!",
-    "Push your code to GitHub after every session. You will thank yourself later if something goes wrong!",
-    "Try freeCodeCamp on YouTube — it has free full courses on Python, HTML, CSS, and JavaScript!",
-    "Do not try to learn everything at once. Master one language first then move on to the next!",
-    "Reading other people's code is one of the best ways to learn. Look at open source projects on GitHub!",
-    "Take breaks when you are stuck. Sometimes the solution comes to you when you stop staring at the screen!",
-    "Join a coding Discord community — there are thousands of friendly developers who love helping beginners!",
-    "Variables, loops, and functions are the three most important things in all of coding. Make sure you really understand them!",
-    "Your first projects do not have to be perfect. Just finish them and push them to GitHub — done is better than perfect!",
-    "Harvard CS50 on YouTube is one of the best free coding courses in the world. Check it out when you have time!",
-    "Learning to read error messages is a superpower. They tell you exactly what went wrong and where!",
-    "Try to code something that you actually care about — it is way more fun to build things you are interested in!",
-    "W3Schools at w3schools.com is great for quickly looking up how to do something in HTML, CSS, or Python!",
-    "The GitHub Student Developer Pack gives students free access to hundreds of dollars worth of coding tools — sign up if you are a student!",
-    "Practice typing code by hand rather than copying and pasting — your fingers will memorize the patterns much faster!",
-    "Every expert was once a beginner. The only difference between you and a pro developer is time and practice!",
-    "Comment your code as you write it — notes that explain what each part does will save you a huge amount of confusion later!",
-  ];
-
-  let tipIndex = 0;
-  const shuffled = tips.sort(() => Math.random() - 0.5);
-
-  function beginnerYes() { showScreen('screen-2a'); }
-  function beginnerNo() { showScreen('screen-2b'); }
-  function surveyAnswer() { showScreen('screen-3'); }
-  function notBeginnerYes() { showNamePopup(); }
-  function notBeginnerNo() { showScreen('screen-4'); }
-
-  function showScreen(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function showNamePopup() {
-    document.getElementById('survey-container').style.display = 'none';
-    document.getElementById('name-popup').classList.add('show');
-    document.getElementById('name-input').focus();
-  }
-
-  document.getElementById('name-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') submitName();
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = getSaved();
+    if (saved) {
+      document.getElementById('already-info').innerHTML =
+        `Signed up as <strong>${saved.name}</strong> with email <strong>${saved.email}</strong>.`;
+      show('already');
+    } else {
+      show('landing');
+    }
   });
 
-  function submitName() {
-    const input = document.getElementById('name-input').value.trim();
-    userName = input.length > 0 ? input : 'Friend';
-    document.getElementById('name-popup').classList.remove('show');
-    goToMain();
+  function getSaved() {
+    try {
+      const d = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return (d && d.name && d.email) ? d : null;
+    } catch { return null; }
   }
 
-  function goToMain() {
-    document.getElementById('survey-container').style.display = 'none';
-    document.getElementById('name-popup').classList.remove('show');
-    document.getElementById('main-content').style.display = 'block';
-    document.getElementById('welcome-message').textContent = '💜 Hey ' + userName + '! I hope this helps you on your coding journey!';
+  function show(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
     window.scrollTo(0, 0);
-
-    // Show first tip after 60 seconds, then every 60 seconds
-    setTimeout(() => {
-      showTip();
-      setInterval(showTip, 60000);
-    }, 60000);
   }
 
-  function showTip() {
-    const tip = shuffled[tipIndex % shuffled.length];
-    tipIndex++;
-    document.getElementById('tip-title').textContent = 'Hey ' + userName + '! 👋 Quick tip for you:';
-    document.getElementById('tip-text').textContent = tip;
-    const popup = document.getElementById('tip-popup');
-    popup.style.display = 'block';
-    popup.style.animation = 'none';
-    popup.offsetHeight; // reflow
-    popup.style.animation = 'slideDown 0.4s ease';
-
-    // Auto hide after 10 seconds
-    setTimeout(closeTip, 10000);
+  function submitName() {
+    const inp = document.getElementById('inp-name');
+    const err = document.getElementById('err-name');
+    const val = inp.value.trim();
+    if (val.split(/\s+/).filter(Boolean).length < 2) {
+      inp.classList.add('error'); err.classList.add('show'); return;
+    }
+    inp.classList.remove('error'); err.classList.remove('show');
+    name = val;
+    document.getElementById('email-sub').textContent = `Hey ${val.split(' ')[0]}! Where should we send your session details?`;
+    show('email');
   }
 
-  function closeTip() {
-    document.getElementById('tip-popup').style.display = 'none';
+  function submitEmail() {
+    const inp = document.getElementById('inp-email');
+    const err = document.getElementById('err-email');
+    const val = inp.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      inp.classList.add('error'); err.classList.add('show'); return;
+    }
+    inp.classList.remove('error'); err.classList.remove('show');
+    email = val;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ name, email, date: new Date().toISOString() }));
+    document.getElementById('success-msg').textContent = `Welcome, ${name.split(' ')[0]}! We'll reach out to ${email} soon to schedule your first lesson. 🎉`;
+    show('success');
   }
+
+  function restart() {
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-email').value = '';
+    name = ''; email = '';
+    show('landing');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('inp-name').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+    document.getElementById('inp-email').addEventListener('keydown', e => { if (e.key === 'Enter') submitEmail(); });
+  });
 </script>
-
 </body>
 </html>
